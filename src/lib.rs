@@ -1,3 +1,12 @@
+mod Card;
+mod Deck;
+mod Settings;
+mod Action;
+mod Game;
+mod Player;
+mod Players;
+mod Hand;
+
 pub fn add(left: usize, right: usize) -> usize {
     left + right
 }
@@ -12,3 +21,4 @@ mod tests {
         assert_eq!(result, 4);
     }
 }
+

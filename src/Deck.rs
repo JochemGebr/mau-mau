@@ -4,13 +4,13 @@ use crate::Card::{Card, Color};
 use rand::thread_rng;
 use rand::seq::SliceRandom;
 
-pub struct Cards {
+pub struct Deck {
     cards: Vec<Card>
 }
 
-impl Cards {
-    pub fn new() -> Cards {
-        Cards {
+impl Deck {
+    pub fn new() -> Deck {
+        Deck {
             cards: Self::create_cards()
         }
     }
@@ -28,12 +28,15 @@ impl Cards {
         cards
     }
 
-    pub fn get_random_card(&mut self) -> Option<Card> {
-        self.cards.pop()
+    pub fn draw_card(&mut self) -> Card {
+        self.cards.pop().unwrap()
     }
 
-    pub fn get_random_cards(&mut self, n: usize) -> Vec<Cards> {
-        self.cards.drain(0..5).as_slice()
+    pub fn draw_cards(&mut self, amount: usize) -> Vec<Card> {
+        let start_index = self.cards.len().saturating_sub(amount);
+        let cards = self.cards.drain(start_index..).collect();
+
+        cards
     }
 
     pub fn reset(&mut self) {
@@ -43,12 +46,27 @@ impl Cards {
 
 #[cfg(test)]
 mod tests {
-    use crate::Cards::Cards;
+    use crate::Deck::Deck;
 
     #[test]
     fn create_vec_of_cards() {
-        let cards = Cards::create_cards();
+        let cards = Deck::create_cards();
 
         assert_eq!(52, cards.len());
+    }
+
+    #[test]
+    fn random_cards_dont_repeat() {
+        let mut cards = Deck::new();
+        let selection = cards.draw_cards(52);
+
+        //assert_eq!(52, selection.iter().);
+    }
+
+    #[test]
+    fn many_times_look_at_that_performance_this_would_be_useful_when_everyone_in_the_world_wants_to_play_a_game_at_the_same_time() {
+        for _ in 0..1000000 {
+            Deck::new();
+        }
     }
 }

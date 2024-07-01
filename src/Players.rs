@@ -1,0 +1,80 @@
+use  crate::Player::Player;
+
+pub struct Players {
+    current_player_index: usize,
+    players: Vec<Player>,
+}
+
+impl Players {
+    pub fn new() -> Players {
+        Players {
+            current_player_index: 0,
+            players: vec![],
+        }
+    }
+
+    pub fn add_player(&mut self, player: Player) {
+        self.players.push(player);
+    }
+
+    pub fn get_current_player(&self) -> &Player {
+        self.players.get(self.current_player_index).unwrap()
+    }
+
+    pub fn get_next_player_at_mut(&mut self, position: usize) -> &mut Player {
+        let index = (self.current_player_index + position) % self.players.len();
+        self.players.get_mut(index).unwrap()
+    }
+
+    pub fn get_next_player_at(&self, position: usize) -> &Player {
+        let index = (self.current_player_index + position) % self.players.len();
+        self.players.get(index).unwrap()
+    }
+
+    pub fn next_round(&mut self) {
+        self.current_player_index = (self.current_player_index + 1) % self.players.len();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::Player::Player;
+    use crate::Players::Players;
+
+    #[test]
+    fn add_players() {
+        let mut players = Players::new();
+        players.add_player(Player::new("Piet"));
+        players.add_player(Player::new("Jan"));
+        players.add_player(Player::new("Klaas"));
+
+        assert_eq!(players.players.len(), 3);
+    }
+
+    #[test]
+    fn get_current_player() {
+        let mut players = Players::new();
+        players.add_player(Player::new("Piet"));
+        players.add_player(Player::new("Jan"));
+        players.add_player(Player::new("Klaas"));
+
+        assert_eq!(players.get_current_player().get_name(), "Piet");
+        players.next_round();
+        assert_eq!(players.get_current_player().get_name(), "Jan");
+        players.next_round();
+        assert_eq!(players.get_current_player().get_name(), "Klaas");
+    }
+
+    #[test]
+    fn go_round() {
+        let mut players = Players::new();
+        players.add_player(Player::new("Piet"));
+        players.add_player(Player::new("Jan"));
+
+        assert_eq!(players.get_current_player().get_name(), "Piet");
+        players.next_round();
+        assert_eq!(players.get_current_player().get_name(), "Jan");
+        players.next_round();
+        assert_eq!(players.get_current_player().get_name(), "Piet");
+    }
+}
