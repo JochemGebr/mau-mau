@@ -1,4 +1,4 @@
-use  crate::Player::Player;
+use  crate::player::Player;
 
 pub struct Players {
     current_player_index: usize,
@@ -38,8 +38,8 @@ impl Players {
 
 #[cfg(test)]
 mod tests {
-    use crate::Player::Player;
-    use crate::Players::Players;
+    use crate::player::Player;
+    use crate::players::Players;
 
     #[test]
     fn add_players() {
@@ -76,5 +76,18 @@ mod tests {
         assert_eq!(players.get_current_player().get_name(), "Jan");
         players.next_round();
         assert_eq!(players.get_current_player().get_name(), "Piet");
+    }
+
+    #[test]
+    fn get_next_player() {
+        let mut players = Players::new();
+        players.add_player(Player::new("Piet"));
+        players.add_player(Player::new("Jan"));
+        players.add_player(Player::new("Klaas"));
+
+        assert_eq!(players.get_next_player_at(0).get_name(), "Piet");
+        assert_eq!(players.get_next_player_at(1).get_name(), "Jan");
+        assert_eq!(players.get_next_player_at(2).get_name(), "Klaas");
+        assert_eq!(players.get_next_player_at(3).get_name(), "Piet");
     }
 }

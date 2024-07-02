@@ -1,5 +1,5 @@
-use crate::Action::Action;
-use crate::Card::Card;
+use crate::action::Action;
+use crate::card::Card;
 
 pub struct Settings {}
 
@@ -9,6 +9,6 @@ impl Settings {
     }
 
     fn set_card_action(&self, card: Card, action: Box<dyn Action>) {
-
+        
     }
 }

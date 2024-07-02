@@ -1,5 +1,5 @@
-use crate::Card::Card;
-use crate::Deck::Deck;
+use crate::card::Card;
+use crate::deck::Deck;
 
 pub struct Hand {
     cards: Vec<Card>,
@@ -18,8 +18,8 @@ impl Hand {
         }
     }
 
-    pub fn add_cards(&mut self, cards: &mut Vec<Card>) {
-        self.cards.append(cards);
+    pub fn add_cards(&mut self, mut cards: Vec<Card>) {
+        self.cards.append(&mut cards);
     }
 
     pub fn get_cards(&self) -> &Vec<Card> {

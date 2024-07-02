@@ -1,4 +1,4 @@
-use crate::Game::Game;
+use crate::game::Game;
 
 pub trait Action {
     fn execute(&self, game: &mut Game);
@@ -11,25 +11,25 @@ pub struct TakeCards {
 
 impl Action for TakeCards {
     fn execute(&self, game: &mut Game) {
-        let mut cards_to_add = game.get_deck_mut().draw_cards(self.amount);
+        let cards_to_add = game.get_deck_mut().draw_cards(self.amount);
         let player = game.get_players_mut().get_next_player_at_mut(self.next_player);
         let hand = player.get_hand_mut();
-        hand.add_cards(&mut cards_to_add);
+        hand.add_cards(cards_to_add);
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::Game::Game;
-    use crate::Settings::Settings;
-    use crate::Player::Player;
-    use crate::Action::{Action, TakeCards};
+    use crate::game::Game;
+    use crate::settings::Settings;
+    use crate::player::Player;
+    use crate::action::{Action, TakeCards};
 
     #[test]
     fn take_two_cards() {
         let settings = Settings::new();
         let mut game = Game::new(settings);
-        let mut players = game.get_players_mut();
+        let players = game.get_players_mut();
         let player1 = Player::new("Piet");
         players.add_player(player1);
         let player2 = Player::new("Jan");

@@ -1,5 +1,5 @@
 use strum::IntoEnumIterator;
-use crate::Card::{Card, Color};
+use crate::card::{Card, Color};
 
 use rand::thread_rng;
 use rand::seq::SliceRandom;
@@ -25,6 +25,7 @@ impl Deck {
             }
         }
         cards.shuffle(&mut thread_rng());
+
         cards
     }
 
@@ -46,7 +47,7 @@ impl Deck {
 
 #[cfg(test)]
 mod tests {
-    use crate::Deck::Deck;
+    use crate::deck::Deck;
 
     #[test]
     fn create_vec_of_cards() {

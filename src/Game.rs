@@ -1,6 +1,6 @@
-use crate::Settings::Settings;
-use crate::Deck::Deck;
-use crate::Players::Players;
+use crate::settings::Settings;
+use crate::deck::Deck;
+use crate::players::Players;
 
 pub struct Game {
     settings: Settings,
@@ -40,8 +40,8 @@ impl Game {
 
 #[cfg(test)]
 mod tests {
-    use crate::Game::Game;
-    use crate::Settings::Settings;
+    use crate::game::Game;
+    use crate::settings::Settings;
 
     #[test]
     fn make_new_game() {

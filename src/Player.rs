@@ -1,4 +1,4 @@
-use crate::Hand::Hand;
+use crate::hand::Hand;
 
 pub struct Player {
     name: String,

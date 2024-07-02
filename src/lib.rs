@@ -1,11 +1,11 @@
-mod Card;
-mod Deck;
-mod Settings;
-mod Action;
-mod Game;
-mod Player;
-mod Players;
-mod Hand;
+mod card;
+mod deck;
+mod settings;
+mod action;
+mod game;
+mod player;
+mod players;
+mod hand;
 
 pub fn add(left: usize, right: usize) -> usize {
     left + right
