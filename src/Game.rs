@@ -33,6 +33,10 @@ impl Game {
         &self.deck
     }
 
+    pub fn get_settings(&self) -> &Settings {
+        &self.settings
+    }
+
     pub fn start(&self) {
 
     }

@@ -2,7 +2,7 @@ mod card;
 mod deck;
 mod settings;
 mod action;
-mod game;
+pub mod game;
 mod player;
 mod players;
 mod hand;
