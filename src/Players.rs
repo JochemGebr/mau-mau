@@ -1,4 +1,5 @@
-use  crate::player::Player;
+use crate::player::Player;
+use crate::pile::Pile;
 
 pub struct Players {
     current_player_index: usize,
@@ -13,12 +14,22 @@ impl Players {
         }
     }
 
+    pub fn deal(&mut self, deck: &mut Pile, number_of_cards: usize) {
+        for player in self.players.iter_mut() {
+            player.get_hand_mut().take_cards_from(deck, number_of_cards);
+        }
+    }
+
     pub fn add_player(&mut self, player: Player) {
         self.players.push(player);
     }
 
     pub fn get_current_player(&self) -> &Player {
         self.players.get(self.current_player_index).unwrap()
+    }
+
+    pub fn get_current_player_mut(&mut self) -> &mut Player {
+        self.players.get_mut(self.current_player_index).unwrap()
     }
 
     pub fn get_next_player_at_mut(&mut self, position: usize) -> &mut Player {

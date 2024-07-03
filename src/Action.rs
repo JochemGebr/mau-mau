@@ -1,7 +1,7 @@
-use crate::game::Game;
+use crate::game::{Game, GameWithStock};
 
-pub trait Action {
-    fn execute(&self, game: &mut Game);
+pub trait Action<G: Game> {
+    fn execute(&self, game: &mut G);
 }
 
 pub struct TakeCards {
@@ -9,10 +9,15 @@ pub struct TakeCards {
     pub next_player: usize,
 }
 
-impl Action for TakeCards {
-    fn execute(&self, game: &mut Game) {
-        let cards_to_add = game.get_deck_mut().draw_cards(self.amount);
-        let player = game.get_players_mut().get_next_player_at_mut(self.next_player);
+impl<G> Action<G> for TakeCards
+where
+    G: GameWithStock,
+{
+    fn execute(&self, game: &mut G) {
+        let cards_to_add = game.get_stock_mut().take_top_cards(self.amount);
+        let player = game
+            .get_players_mut()
+            .get_next_player_at_mut(self.next_player);
         let hand = player.get_hand_mut();
         hand.add_cards(cards_to_add);
     }
@@ -20,15 +25,15 @@ impl Action for TakeCards {
 
 #[cfg(test)]
 mod tests {
-    use crate::game::Game;
-    use crate::settings::Settings;
-    use crate::player::Player;
     use crate::action::{Action, TakeCards};
+    use crate::game::{Game, GameWithStock};
+    use crate::mau_mau::MauMau;
+    use crate::player::Player;
 
     #[test]
     fn take_two_cards() {
-        let settings = Settings::new();
-        let mut game = Game::new(settings);
+        let mut game = MauMau::new();
+        game.get_stock_mut().add_deck();
         let players = game.get_players_mut();
         let player1 = Player::new("Piet");
         players.add_player(player1);
@@ -42,8 +47,10 @@ mod tests {
             next_player: 1,
         };
         action.execute(&mut game);
-        
+
+        let player1 = game.get_players().get_next_player_at(0);
         let player2 = game.get_players().get_next_player_at(1);
+        assert_eq!(player1.get_hand().get_cards().len(), 0);
         assert_eq!(player2.get_hand().get_cards().len(), 2);
     }
 }
