@@ -2,46 +2,27 @@ use std::io::{self};
 
 use crate::{card::Card, pile::Pile};
 
-pub struct Player {
-    name: String,
-    points: u32,
-    hand: Pile,
-}
+pub trait Player {
+    fn new(name: &str) -> dyn Player;
 
-impl Player {
-    pub fn new(name: &str) -> Player {
-        Player {
-            name: name.to_string(),
-            points: 0,
-            hand: Pile::new(),
-        }
-    }
-
-    pub fn add_points(&mut self, points: u32) {
-        self.points += points;
-    }
-
-    pub fn get_hand(&self) -> &Pile {
-        &self.hand
-    }
-
-    pub fn get_hand_mut(&mut self) -> &mut Pile {
-        &mut self.hand
-    }
-
-    pub fn get_name(&self) -> &String {
+    fn get_name(&self) -> &String {
         &self.name
     }
+}
 
-    pub fn select_card(&mut self) -> Option<Card> {
-        println!("Your hand: {}", self.hand.get_drawing());
+pub trait HandedPlayer {
+    fn get_hand(&self) -> &Pile;
+    fn get_hand_mut(&mut self) -> &mut Pile;
+
+    fn select_card(&mut self) -> Option<Card> {
+        println!("Your hand: {}", self.get_hand().get_drawing());
         println!("Select a card to play by typing its index: ");
         let mut input_line = String::new();
         io::stdin()
             .read_line(&mut input_line)
             .expect("Failed to read line");
         let index: usize = input_line.trim().parse().expect("Input not an integer");
-        self.hand.take_card(index)
+        self.get_hand_mut().take_card(index)
     }
 }
 

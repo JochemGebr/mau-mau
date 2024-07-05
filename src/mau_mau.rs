@@ -2,6 +2,7 @@ use crate::game::{Game, GameWithStock};
 use crate::pile::Pile;
 use crate::players::Players;
 use crate::settings::Settings;
+use crate::player::{Player, HandedPlayer};
 
 pub struct MauMau {
     settings: Settings,
@@ -58,5 +59,50 @@ impl Game for MauMau {
 impl GameWithStock for MauMau {
     fn get_stock_mut(&mut self) -> &mut Pile {
         &mut self.stock
+    }
+}
+
+
+pub struct MauMauPlayer {
+    name: String,
+    points: u32,
+    hand: Pile,
+}
+
+impl MauMauPlayer {
+    fn add_points(&mut self, points: u32) {
+        self.points += points;
+    }
+
+    fn get_hand(&self) -> &Pile {
+        &self.hand
+    }
+
+    fn get_hand_mut(&mut self) -> &mut Pile {
+        &mut self.hand
+    }
+
+    fn get_name(&self) -> &String {
+        &self.name
+    }
+}
+
+impl Player for MauMauPlayer {
+    fn new(name: &str) -> MauMauPlayer {
+        MauMauPlayer {
+            name: name.to_string(),
+            points: 0,
+            hand: Pile::new(),
+        }
+    }
+}
+
+impl HandedPlayer for MauMauPlayer {
+    fn get_hand(&self) -> &Pile {
+        &self.hand
+    }
+
+    fn get_hand_mut(&mut self) -> &mut Pile {
+        &mut self.hand
     }
 }

@@ -5,3 +5,5 @@ mod pile;
 pub mod player;
 mod players;
 mod settings;
+mod utilities;
+

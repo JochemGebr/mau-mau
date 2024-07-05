@@ -8,14 +8,13 @@ pub trait GameWithStock: Game {
 }
 
 pub trait Game {
-    // fn new(&self) -> Self;
     fn start(&mut self);
 
     fn get_players(&self) -> &Players;
     fn get_players_mut(&mut self) -> &mut Players;
     fn get_settings(&self) -> &Settings;
 
-    fn add_player(&mut self, player: Player) {
+    fn add_player(&mut self, player: dyn Player) {
         self.get_players_mut().add_player(player);
     }
 }

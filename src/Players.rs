@@ -3,7 +3,7 @@ use crate::pile::Pile;
 
 pub struct Players {
     current_player_index: usize,
-    players: Vec<Player>,
+    players: Vec<dyn Player>,
 }
 
 impl Players {
@@ -20,24 +20,24 @@ impl Players {
         }
     }
 
-    pub fn add_player(&mut self, player: Player) {
+    pub fn add_player(&mut self, player: dyn Player) {
         self.players.push(player);
     }
 
-    pub fn get_current_player(&self) -> &Player {
+    pub fn get_current_player(&self) -> &dyn Player {
         self.players.get(self.current_player_index).unwrap()
     }
 
-    pub fn get_current_player_mut(&mut self) -> &mut Player {
+    pub fn get_current_player_mut(&mut self) ->  &mut dyn Player {
         self.players.get_mut(self.current_player_index).unwrap()
     }
 
-    pub fn get_next_player_at_mut(&mut self, position: usize) -> &mut Player {
+    pub fn get_next_player_at_mut(&mut self, position: usize) -> &mut dyn Player {
         let index = (self.current_player_index + position) % self.players.len();
         self.players.get_mut(index).unwrap()
     }
 
-    pub fn get_next_player_at(&self, position: usize) -> &Player {
+    pub fn get_next_player_at(&self, position: usize) -> &dyn Player {
         let index = (self.current_player_index + position) % self.players.len();
         self.players.get(index).unwrap()
     }
